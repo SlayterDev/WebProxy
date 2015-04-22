@@ -45,3 +45,51 @@ void writeToCache(char *request, char *content) {
 	fclose(f);
 	free(filename);
 }
+
+void initInsults() {
+	FILE *f = fopen(INSULTS_FILE, "r");
+
+	if (!f) {
+		fprintf(stderr, "Could not open insults file.\n");
+		exit(1);
+	}
+
+	int i = 0;
+	char tmpBuf[22] = "";
+	while (fgets(tmpBuf, 22, f) != NULL) {
+		tmpBuf[strlen(tmpBuf)-1] = '\0'; // trim newline
+		strcpy(insults[i], tmpBuf);
+		i++;
+	}
+
+	insult_count = i;
+
+	fclose(f);
+}
+
+void censorSite(char *content) {
+	static char bufCpy[SERVER_REPLY_SIZE] = "";
+	strcpy(bufCpy, content);
+
+	char *tok = strtok(bufCpy, " \n\r\t"); // assuming first word is 
+											// always '<HTML>'
+	while ((tok = strtok(NULL, " \n\r\t")) != NULL) {
+		for (int i = 0; i < insult_count; i++) {
+			int match = 1;
+			for (int j = 0; j < strlen(insults[i]); j++) {
+				if (tok[j] != insults[i][j]) {
+					match = 0;
+					break;
+				}
+			}
+
+			if (match) {
+				// censor the word
+				int offset = tok - bufCpy;
+
+				for (int k = offset; k < offset + strlen(tok); k++)
+					content[k] = '*';	
+			}
+		}
+	}
+}

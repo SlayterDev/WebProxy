@@ -61,6 +61,8 @@ void makeHTTPRequest(int sockfd, char *request) {
 		pthread_exit(&ret);
 	}
 
+	censorSite(serverReply);
+
 	printf("Recieved From Server: %s\n", serverReply);
 	writeToClient(sockfd, serverReply);
 

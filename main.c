@@ -1,5 +1,6 @@
 #include "globals.h"
 #include "net.h"
+#include "data.h"
 
 int main(int argc, char const *argv[]) {
 	if (argc != 2) {
@@ -7,6 +8,8 @@ int main(int argc, char const *argv[]) {
 		fprintf(stderr, "<port>: The port to run the proxy on.\n");
 		return 1;
 	}
+
+	initInsults();
 
 	beginServer(atoi(argv[1]));
 
