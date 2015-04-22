@@ -44,7 +44,6 @@ void makeHTTPRequest(int sockfd, char *request) {
 		pthread_exit(&ret);
 	}
 
-	char *file = strForFile(request);
 	char *fullRequest = (char *)malloc(strlen(request)+23);
 	sprintf(fullRequest, "GET http://%s HTTP/1.0\n\n", request);
 

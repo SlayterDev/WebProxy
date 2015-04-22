@@ -5,12 +5,39 @@
 
 #define INSULTS_FILE "insults.txt"
 
+// Number of insults counted
 int insult_count;
+
+// Insults as an array
 char insults[244][22];
 
+
+/*
+ Initializes the insults array
+*/
 void initInsults();
+
+/*
+ Attempts to get a requested site from the cache. Returns null if
+ the site is not in the array.
+
+ Takes a char pointer to the requested site.
+*/
 char *getFromCache(char *request);
+
+/*
+ Write the content of a website to the cache.
+
+ Takes a char pointer to the site requested, and a char pointer to
+ the content of the website.
+*/
 void writeToCache(char *request, char *content);
+
+/*
+ Filters the profanity out of a website.
+
+ Takes a char pointer to the content of the website.
+*/
 void censorSite(char *content);
 
 #endif

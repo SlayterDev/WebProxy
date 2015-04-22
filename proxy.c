@@ -2,17 +2,6 @@
 #include "net.h"
 #include "data.h"
 
-char *strForFile(char *request) {
-	int i = 0;
-	while (request[i] && request[i] != '/')
-		i++;
-
-	if (!request[i])
-		return "/";
-	else
-		return request+i;
-}
-
 char *trimWWW(char *request) {
 	int cnt = 0, i = 0;
 	while (request[i] == 'w' && cnt < 3) {
