@@ -1,5 +1,6 @@
 #include "net.h"
 #include "proxy.h"
+#include "data.h"
 
 int writeToClient(int sockfd, char *message) {
 	if (write(sockfd, message, strlen(message)) < 0) {
@@ -53,8 +54,8 @@ void makeHTTPRequest(int sockfd, char *request) {
 		pthread_exit(&ret);
 	}
 
-	char serverReply[2000];
-	if (recv(reqSock, serverReply, 2000, 0) < 0) {
+	char serverReply[SERVER_REPLY_SIZE];
+	if (recv(reqSock, serverReply, SERVER_REPLY_SIZE, 0) < 0) {
 		fprintf(stderr, "[-] Failed to receive message\n");
 		close(reqSock);
 		pthread_exit(&ret);
@@ -63,7 +64,10 @@ void makeHTTPRequest(int sockfd, char *request) {
 	printf("Recieved From Server: %s\n", serverReply);
 	writeToClient(sockfd, serverReply);
 
+	writeToCache(request, serverReply);
+
 	close(reqSock);
+	free(fullRequest);
 }
 
 // Loop started for each thread

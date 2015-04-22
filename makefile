@@ -1,4 +1,4 @@
-SOURCES := main.o net.o proxy.o
+SOURCES := main.o net.o proxy.o data.o
 
 CFLAGS := -g -std=c99 -lpthread
 

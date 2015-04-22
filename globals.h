@@ -6,6 +6,8 @@
 
 #define MAX_CLIENTS 10
 
+#define SERVER_REPLY_SIZE 4000
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

@@ -1,5 +1,6 @@
 #include "proxy.h"
 #include "net.h"
+#include "data.h"
 
 char *strForFile(char *request) {
 	int i = 0;
@@ -25,6 +26,18 @@ char *trimWWW(char *request) {
 		return request;
 }
 
+int tryCache(int sockfd, char *request) {
+	char *body = getFromCache(request);
+
+	if (body == NULL)
+		return 0;
+
+	writeToClient(sockfd, body);
+
+	free(body);
+	return 1;
+}
+
 void processRequest(int sockfd, char *message) {
 	char *tok = strtok(message, " "); // Filter out the GET message
 	tok = strtok(NULL, " "); // tok now has requested site
@@ -36,5 +49,8 @@ void processRequest(int sockfd, char *message) {
 	memmove(requested, requested+1, strlen(requested));
 	printf("Processing: %s\n", requested);
 
-	makeHTTPRequest(sockfd, requested);
+	if (!tryCache(sockfd, requested))
+		makeHTTPRequest(sockfd, requested);
+
+	free(requested);
 }
