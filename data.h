@@ -4,6 +4,7 @@
 #include "globals.h"
 
 #define INSULTS_FILE "insults.txt"
+#define BLACKLIST_FILE "blacklist.txt"
 
 // Number of insults counted
 int insult_count;
@@ -11,6 +12,9 @@ int insult_count;
 // Insults as an array
 char insults[244][22];
 
+int blackList_count;
+
+char blackList[100][70];
 
 /*
  Initializes the insults array
@@ -39,5 +43,8 @@ void writeToCache(char *request, char *content);
  Takes a char pointer to the content of the website.
 */
 void censorSite(char *content);
+
+void initBlackList();
+int checkBlackList(char *request);
 
 #endif

@@ -1,4 +1,5 @@
 #include "data.h"
+#include "proxy.h"
 
 char *getFromCache(char *request) {
 	char *filename = (char *)malloc(strlen(request)+9); // 4 for tmp/ 4 for .txt
@@ -94,3 +95,37 @@ void censorSite(char *content) {
 		}
 	}
 }
+
+void initBlackList() {
+	FILE *f = fopen(BLACKLIST_FILE, "r");
+
+	if (!f) {
+		fprintf(stderr, "No black list found\n");
+		return;
+	}
+
+	int i = 0;
+	char tmpBuf[70] = "";
+	while (fgets(tmpBuf, 70, f) != NULL) {
+		tmpBuf[strlen(tmpBuf)-1] = '\0';
+		strcpy(blackList[i], tmpBuf);
+		i++;
+	}
+
+	blackList_count = i;
+
+	fclose(f);
+}
+
+int checkBlackList(char *request) {
+	char *trimmedSite;
+	for (int i = 0; i < blackList_count; i++) {
+		trimmedSite = trimWWW(blackList[i]);
+		if (!strcmp(trimmedSite, request))
+			return 1;
+	}
+
+	return 0;
+}
+
+

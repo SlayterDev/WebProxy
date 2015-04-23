@@ -36,6 +36,14 @@ void makeHTTPRequest(int sockfd, char *request) {
 
 	char *host = trimWWW(requestCopy);
 	char *tok = strtok(host, "/"); // tok has host.com
+
+	if (checkBlackList(tok)) {
+		char response[] = "<html><h1>This site is blocked!</h1></html>";
+		printf("Writing response:\n%s\n", response);
+		writeToClient(sockfd, response);
+		return;
+	}
+
 	printf("Connecting to %s\n", tok);
 
 	struct hostent *he;

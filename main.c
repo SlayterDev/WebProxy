@@ -10,6 +10,7 @@ int main(int argc, char const *argv[]) {
 	}
 
 	initInsults();
+	initBlackList();
 
 	beginServer(atoi(argv[1]));
 
