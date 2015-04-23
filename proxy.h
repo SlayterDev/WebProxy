@@ -3,6 +3,8 @@
 
 #include "globals.h"
 
+char *strForFile(char *request);
+
 /*
  Processes the request of the client.
 

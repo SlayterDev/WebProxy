@@ -3,6 +3,8 @@
 
 #include "globals.h"
 
+int sockfd;
+
 /*
  Start the web proxy server.
 

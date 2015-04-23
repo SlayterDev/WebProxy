@@ -2,6 +2,13 @@
 #include "proxy.h"
 #include "data.h"
 
+// Keyboard Interrupt handler to properly close socket
+void sigtermHandler(int signum) {
+	close(sockfd);
+	printf("[+] Socket closed\n");
+	exit(0);
+}
+
 int writeToClient(int sockfd, char *message) {
 	if (write(sockfd, message, strlen(message)) < 0) {
 		fprintf(stderr, "ERROR writing to socket\n");
@@ -24,7 +31,10 @@ void makeHTTPRequest(int sockfd, char *request) {
 	struct sockaddr_in req_addr;
 	memset((char *)&req_addr, 0, sizeof(req_addr));
 
-	char *host = trimWWW(request);
+	char *requestCopy = (char *)malloc(strlen(request)+1);
+	strcpy(requestCopy, request);
+
+	char *host = trimWWW(requestCopy);
 	char *tok = strtok(host, "/"); // tok has host.com
 	printf("Connecting to %s\n", tok);
 
@@ -44,8 +54,12 @@ void makeHTTPRequest(int sockfd, char *request) {
 		pthread_exit(&ret);
 	}
 
+	char *file = strForFile(request);
+
 	char *fullRequest = (char *)malloc(strlen(request)+23);
-	sprintf(fullRequest, "GET http://%s HTTP/1.0\n\n", request);
+	sprintf(fullRequest, "GET %s HTTP/1.0\n\n", file);
+
+	printf("=============\nSending:\n%s\n=============\n", fullRequest);
 
 	if (send(reqSock, fullRequest, strlen(fullRequest), 0) < 0) {
 		fprintf(stderr, "[-] Failed to send message\n");
@@ -99,7 +113,7 @@ void *serverLoop(void *sockfdPtr) {
 }
 
 void beginServer(int portnum) {
-	int sockfd, newsockfd, clilen;
+	int newsockfd, clilen;
 	struct sockaddr_in serv_addr, cli_addr;
 	int n;
 
@@ -120,6 +134,9 @@ void beginServer(int portnum) {
 		fprintf(stderr, "ERROR binding socket\n");
 		exit(1);
 	}
+
+	// Setup SIGTERM handler to gracefully close socket
+	signal(SIGINT, sigtermHandler);
 
 	printf("Server started...\nUse ^C to quit\n");
 

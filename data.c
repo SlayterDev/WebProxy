@@ -9,7 +9,8 @@ char *getFromCache(char *request) {
 
 		if (!f) {
 			fprintf(stderr, "Could not open cahe file: %s\n", filename);
-			exit(1);
+			free(filename);
+			return NULL;
 		}
 
 		char *fileBuffer = (char *)malloc(SERVER_REPLY_SIZE+1);
@@ -36,8 +37,8 @@ void writeToCache(char *request, char *content) {
 	FILE *f = fopen(filename, "w");
 
 	if (!f) {
-		fprintf(stderr, "Could not open cache file: %s\n", filename);
-		exit(1);
+		fprintf(stderr, "Could not write to cache file: %s\n", filename);
+		return;
 	}
 
 	fprintf(f, "%s\n", content);
