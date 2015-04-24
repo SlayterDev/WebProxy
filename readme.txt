@@ -6,8 +6,8 @@ Gaga Tsungi
 Chris Wolfe
 
 
-Compiling
-=========
+Compiling & Setup
+=================
 1. Run 'make' in the project directory to compile the source code
 2. Create a directory called 'tmp' in the directory of the executable to store the cache files
 

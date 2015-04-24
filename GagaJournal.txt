@@ -1,0 +1,3 @@
+4/15/2015 Started on the the censoring functions 
+4/16/2015 Added the censor insults function
+4/21/2015 added the censor site function 

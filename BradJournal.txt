@@ -1,0 +1,5 @@
+4/09/15 - Created base proxy functionality
+4/21/15 - Added documentation to code
+4/23/15 - Fixed issues with requesting pages
+		- Added black list functionality
+		
