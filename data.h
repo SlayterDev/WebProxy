@@ -12,8 +12,10 @@ int insult_count;
 // Insults as an array
 char insults[244][22];
 
+// Number of sites in the black list
 int blackList_count;
 
+// The black list
 char blackList[100][70];
 
 /*
@@ -44,7 +46,16 @@ void writeToCache(char *request, char *content);
 */
 void censorSite(char *content);
 
+/*
+ Initialize the Black List if one is present.
+*/
 void initBlackList();
+
+/*
+ Check if the requested site is in the black list.
+
+ Takes a char pointer to the requested site.
+*/
 int checkBlackList(char *request);
 
 #endif

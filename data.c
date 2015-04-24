@@ -101,6 +101,7 @@ void initBlackList() {
 
 	if (!f) {
 		fprintf(stderr, "No black list found\n");
+		blackList_count = 0;
 		return;
 	}
 
@@ -118,6 +119,9 @@ void initBlackList() {
 }
 
 int checkBlackList(char *request) {
+	if (blackList_count == 0)
+		return;
+
 	char *trimmedSite;
 	for (int i = 0; i < blackList_count; i++) {
 		trimmedSite = trimWWW(blackList[i]);

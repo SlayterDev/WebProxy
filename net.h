@@ -3,6 +3,7 @@
 
 #include "globals.h"
 
+// Server socket descriptor
 int sockfd;
 
 /*

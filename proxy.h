@@ -3,6 +3,11 @@
 
 #include "globals.h"
 
+/*
+ Return the requested file without the domain name.
+
+ Takes a char pointer to the requested site and file.
+*/
 char *strForFile(char *request);
 
 /*
